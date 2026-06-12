@@ -25558,7 +25558,7 @@ l=k==null?null:J.cw(k)
 j=v.G.window.location.hostname
 if(j==="localhost"||j==="127.0.0.1"){s=1
 break}if(l==null||l.length===0){s=1
-break}if("9"===l){A.ayN()
+break}if("10"===l){A.ayN()
 s=1
 break}A.aL0(l)
 p=2
@@ -79639,24 +79639,22 @@ bG(){this.dH()
 this.dg()
 this.kk()}}
 A.B7.prototype={
-L(a){var s,r,q,p,o=this,n=null,m=o.e,l=m!=null,k=o.c,j=k/0.7191011235955056
-if(l)j=Math.max(j,k/0.629059829059829)
-s=o.d
-r=s>1.5707963267948966
-if(r)s=3.141592653589793-s
-q=new Float64Array(16)
-p=new A.b6(q)
-p.ek()
-q[11]=0.001
-p.Vc(s)
-if(r&&l){l=new A.b6(new Float64Array(16))
-l.ek()
-l.Vc(3.141592653589793)
-q=o.f
-q.toString
-l=A.NA(B.R,new A.xQ(m,k,q,n),n,l,!0)
-m=l}else m=new A.GG(k,n)
-return A.ad1(A.NA(B.R,m,n,p,!0),j,k)}}
+L(a){var s,r,q,p=this,o=null,n=p.e,m=n!=null,l=p.c,k=l/0.7191011235955056
+if(m)k=Math.max(k,l/0.629059829059829)
+s=p.d
+r=new Float64Array(16)
+q=new A.b6(r)
+q.ek()
+r[11]=0.001
+q.Vc(s)
+if(s>1.5707963267948966&&m&&p.f!=null){m=new A.b6(new Float64Array(16))
+m.ek()
+m.Vc(3.141592653589793)
+s=p.f
+s.toString
+m=A.NA(B.R,new A.xQ(n,l,s,o),o,m,!0)
+n=m}else n=new A.GG(l,o)
+return A.ad1(A.NA(B.R,n,o,q,!0),k,l)}}
 A.GG.prototype={
 L(a){var s=this.c
 return A.arC("assets/images/bg_card.png",B.yt,!0,s/0.7191011235955056,s)}}
