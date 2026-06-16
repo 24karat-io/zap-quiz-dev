@@ -46,11 +46,32 @@
     document.body.appendChild(script);
   }
 
+  // Flutter's service worker can serve stale WASM/JS bundles across deploys.
+  // Our bootstrap_loader + version.json gate is the source of truth instead.
+  function unregisterServiceWorkers() {
+    if (!('serviceWorker' in navigator)) {
+      return Promise.resolve();
+    }
+    return navigator.serviceWorker.getRegistrations().then(function (registrations) {
+      return Promise.all(
+        registrations.map(function (registration) {
+          return registration.unregister();
+        })
+      );
+    }).catch(function () {});
+  }
+
+  function startBootstrap(version) {
+    unregisterServiceWorkers().finally(function () {
+      loadFlutterBootstrap(version);
+    });
+  }
+
   function redirectWithVersion(buildNumber) {
     var count = incrementRedirectCount();
     if (count > MAX_REDIRECTS) {
       resetRedirectCount();
-      loadFlutterBootstrap(buildNumber);
+      startBootstrap(buildNumber);
       return;
     }
 
@@ -75,7 +96,7 @@
     .then(function (data) {
       var buildNumber = String(data.build_number || '');
       if (!buildNumber) {
-        loadFlutterBootstrap('unknown');
+        startBootstrap('unknown');
         return;
       }
 
@@ -85,9 +106,9 @@
       }
 
       resetRedirectCount();
-      loadFlutterBootstrap(buildNumber);
+      startBootstrap(buildNumber);
     })
     .catch(function () {
-      loadFlutterBootstrap('fallback');
+      startBootstrap('fallback');
     });
 })();
