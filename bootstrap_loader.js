@@ -2,6 +2,17 @@
   var MAX_REDIRECTS = 5;
   var REDIRECT_KEY = 'bootstrap_loader_redirects';
 
+  function rootUrl(path) {
+    if (window.__zapRootUrl) {
+      return window.__zapRootUrl(path);
+    }
+
+    var baseEl = document.querySelector('base');
+    var baseHref = (baseEl && baseEl.getAttribute('href')) || '/';
+    var base = new URL(baseHref, window.location.origin);
+    return new URL(String(path || '').replace(/^\//, ''), base).href;
+  }
+
   function isLocalDev() {
     var host = window.location.hostname;
     return host === 'localhost' || host === '127.0.0.1';
@@ -30,7 +41,7 @@
 
   function loadFlutterBootstrap(version) {
     var script = document.createElement('script');
-    script.src = 'flutter_bootstrap.js?v=' + encodeURIComponent(version);
+    script.src = rootUrl('flutter_bootstrap.js') + '?v=' + encodeURIComponent(version);
     script.async = true;
     document.body.appendChild(script);
   }
@@ -54,7 +65,7 @@
     return;
   }
 
-  fetch('version.json', { cache: 'no-store' })
+  fetch(rootUrl('version.json'), { cache: 'no-store' })
     .then(function (response) {
       if (!response.ok) {
         throw new Error('version.json fetch failed');

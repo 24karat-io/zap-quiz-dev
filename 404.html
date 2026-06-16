@@ -15,6 +15,26 @@
     the `--base-href` argument provided to `flutter build`.
   -->
   <base href="/">
+  <script>
+    (function () {
+      function rootUrl(path) {
+        var baseEl = document.querySelector('base');
+        var baseHref = (baseEl && baseEl.getAttribute('href')) || '/';
+        var base = new URL(baseHref, window.location.origin);
+        return new URL(String(path || '').replace(/^\//, ''), base).href;
+      }
+
+      // Some Android WebViews resolve relative URLs against the route path
+      // (e.g. /shachihata_quiz/9) instead of <base href>. Force an absolute
+      // base URL so Flutter assets, fonts, and canvaskit load from site root.
+      var baseEl = document.querySelector('base');
+      if (baseEl) {
+        baseEl.href = rootUrl('/');
+      }
+
+      window.__zapRootUrl = rootUrl;
+    })();
+  </script>
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
@@ -30,7 +50,7 @@
       overscroll-behavior: none;
     }
   </style>
-  <meta name="app-version" content="0.0.14">
+  <meta name="app-version" content="0.0.15">
 
   <!-- iOS meta tags & icons -->
   <meta name="mobile-web-app-capable" content="yes">
@@ -53,6 +73,6 @@
     For more details:
     * https://docs.flutter.dev/platform-integration/web/initialization
   -->
-  <script src="bootstrap_loader.js?v=14"></script>
+  <script src="bootstrap_loader.js?v=15"></script>
 </body>
 </html>
